@@ -1,8 +1,9 @@
 #pragma once
+#include <cmath>
 
 class EMA {
 private:
-    double value;
+    double value = NAN;
     double alpha;
 
 public:
@@ -18,6 +19,9 @@ public:
     }
 
     void Update(double update) {
+        if (isnan(value)) {
+            value = update;
+        }
         value = value * (1 - alpha) + update * alpha;
     }
 

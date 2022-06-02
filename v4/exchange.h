@@ -3,6 +3,7 @@
 #include <set>
 #include <deque>
 #include <functional>
+#include <vector>
 #include "data_manager.h"
 #include "signal.h"
 
@@ -13,6 +14,7 @@ private:
     const int64_t delay;
     const int64_t limit_wait;
     const double comission;
+    const int64_t max_limits_count = 5000;
 
     struct MarketOrder {
         double volume;
@@ -49,6 +51,42 @@ private:
     int64_t last_order_timestamp = -1;
 
     const int64_t orders_freq;
+
+    void update_limits_0() {
+        return;
+        if (limit_orders0.size() < max_limits_count) {
+            return;
+        }
+        std::vector<LimitOrder> limit0_list;
+        limit0_list.reserve(max_limits_count);
+        
+        for (auto& order : limit_orders0) {
+            if (order.timestamp + limit_wait >= data_row.timestamp) {
+                limit0_list.push_back(order);
+            }
+        }
+
+        limit_orders0 = std::multiset<LimitOrder>(
+            limit0_list.begin(), limit0_list.end());
+    }
+
+    void update_limits_1() {
+        return;
+        if (limit_orders1.size() < max_limits_count) {
+            return;
+        }
+        std::vector<LimitOrder> limit1_list;
+        limit1_list.reserve(max_limits_count);
+        
+        for (auto& order : limit_orders1) {
+            if (order.timestamp + limit_wait >= data_row.timestamp) {
+                limit1_list.push_back(order);
+            }
+        }
+
+        limit_orders1 = std::multiset<LimitOrder>(
+            limit1_list.begin(), limit1_list.end());
+    }
 
 public:
     Exchange(
@@ -97,12 +135,28 @@ public:
     void LimitMarketOrder_0(double volume, double price) {
         if (last_order_timestamp + orders_freq <= data_row.timestamp) {
             limit0.emplace_back(volume, price, data_row.timestamp);
+            update_limits_0();
             last_order_timestamp = data_row.timestamp;
         }
     }
     void LimitMarketOrder_1(double volume, double price) {
         if (last_order_timestamp + orders_freq <= data_row.timestamp) {
             limit1.emplace_back(volume, price, data_row.timestamp);
+            update_limits_1();
+            last_order_timestamp = data_row.timestamp;
+        }
+    }
+    void LimitMarketOrder_0(double volume) {
+        if (last_order_timestamp + orders_freq <= data_row.timestamp) {
+            limit0.emplace_back(volume, data_row.bid_pr_0, data_row.timestamp);
+            update_limits_0();
+            last_order_timestamp = data_row.timestamp;
+        }
+    }
+    void LimitMarketOrder_1(double volume) {
+        if (last_order_timestamp + orders_freq <= data_row.timestamp) {
+            limit1.emplace_back(volume, data_row.bid_pr_1, data_row.timestamp);
+            update_limits_1();
             last_order_timestamp = data_row.timestamp;
         }
     }
@@ -123,9 +177,11 @@ public:
 
         while (!limit0.empty() && limit0.front().timestamp + delay <= data_row.timestamp) {
             limit_orders0.insert(limit0.front());
+            limit0.pop_front();
         }
         while (!limit1.empty() && limit1.front().timestamp + delay <= data_row.timestamp) {
             limit_orders1.insert(limit1.front());
+            limit1.pop_front();
         }
         
         while (!limit_orders0.empty() && limit_orders0.begin()->price > data_row.bid_pr_0) {
@@ -140,7 +196,7 @@ public:
             if (limit_orders1.begin()->timestamp + delay + limit_wait > data_row.timestamp) {
                 balance1 -= limit_orders1.begin()->volume;
                 volume1 += limit_orders1.begin()->volume;
-                balance0 += limit_orders1.begin()->volume * data_row.bid_pr_0 / limit_orders0.begin()->price * (1 - comission / 2);
+                balance0 += limit_orders1.begin()->volume * data_row.bid_pr_0 / limit_orders1.begin()->price * (1 - comission / 2);
             }
             limit_orders1.erase(limit_orders1.begin());
         }

@@ -1,0 +1,7 @@
+feature_settings_path   settings/feature.settings.txt
+target_settings_path    settings/target.settings.txt
+comission               0.00036
+mean_alpha              1e-6
+elr_alpha               1e-6
+max_balance             5
+history_step_count      1000

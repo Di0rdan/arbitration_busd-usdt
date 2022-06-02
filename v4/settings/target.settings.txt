@@ -1,0 +1,7 @@
+target LimitPriceBid0
+    delay             500000
+    tick_delay_count  499
+
+target LimitPriceBid1
+    delay             500000
+    tick_delay_count  499

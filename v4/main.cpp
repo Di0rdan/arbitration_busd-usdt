@@ -1,6 +1,14 @@
 #include <iostream>
+#include <Eigen/Dense>
+
 #include "main_executor.h"
+
 #include "models/mm_simple.h"
+#include "models/ml_simple.h"
+#include "models/feature_printer.h"
+// #include "models/I_ML_Model.h"
+#include "models/limit_price_predict.h"
+
 #include "solvers/parameters_parser.h"
 #include <iomanip>
 #include <string>
@@ -10,17 +18,18 @@
 #define Model MM_Simple
 #endif
 
+#define DEF2STR(x) #x
+#define STR(x) DEF2STR(x)
+
+
 int main(int argc, char** argv) {
     if (argc < 2) {
         std::cerr << "enter the path of the settings file as the first argument\n";
         return 1;
     }
 
-    std::string model_settings_path = "model_settings.txt";
-    #if(Model==MM_Simple)
-    model_settings_path = "MM_Simple.settings.txt";
-    #endif
-
+    std::string model_settings_path = "settings/" STR(Model) ".settings.txt";
+    
     int delay = 10000;
     int orders_freq = 40000;
     int limit_wait = 3e6;
@@ -35,12 +44,13 @@ int main(int argc, char** argv) {
     int64_t finish_timestamp = 1649980799993000ll;
     uint64_t max_step_count = -1ll;
 
-    SET_VARIABLES("settings.txt" 
+    SET_VARIABLES(argv[1]
         ,model_settings_path
         ,delay
         ,orders_freq
         ,limit_wait
         ,comission
+        ,max_step_count
         ,trades_path
         ,tickers_path
         ,data_log_path
@@ -48,13 +58,10 @@ int main(int argc, char** argv) {
         ,freq
         ,start_timestamp
         ,finish_timestamp
-        ,max_step_count
     );
-    
-    Model model(model_settings_path);
 
     MainExecutor<Model> executor(
-        model,
+        model_settings_path,
         delay, 
         comission,
         orders_freq,

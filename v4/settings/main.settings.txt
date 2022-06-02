@@ -1,0 +1,8 @@
+    datafile_path  ../data_coursework.csv
+ #   max_step_count       6000000
+    comission            0.0002
+    orders_freq          50000
+    data_log_freq        1000
+    limit_wait           500000
+    delay                20000
+    freq                 1000

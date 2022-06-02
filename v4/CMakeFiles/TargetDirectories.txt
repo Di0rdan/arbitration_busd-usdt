@@ -1,0 +1,3 @@
+/Users/dmitrijvorobev/+iq/AMI/course_project_main/coursework/public3/v4/CMakeFiles/main.dir
+/Users/dmitrijvorobev/+iq/AMI/course_project_main/coursework/public3/v4/CMakeFiles/edit_cache.dir
+/Users/dmitrijvorobev/+iq/AMI/course_project_main/coursework/public3/v4/CMakeFiles/rebuild_cache.dir

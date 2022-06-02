@@ -1,5 +1,4 @@
 #include <iostream>
-#include "models/mm_simple.h"
 #include "exchange.h"
 
 template<class Model>
@@ -35,7 +34,7 @@ public:
     
 public:
     MainExecutor(
-        Model model_,
+        const std::string& model_settings_path,
         int64_t delay, 
         double comission,
         int64_t orders_freq,
@@ -45,7 +44,7 @@ public:
         const std::string& data_log_path,
         int64_t data_log_freq
     ) : 
-        model(model_),
+        model(model_settings_path),
         exchange(
             delay, 
             comission,

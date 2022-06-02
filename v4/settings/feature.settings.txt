@@ -1,0 +1,56 @@
+feature BidPrice0
+    norm_alpha 3e-6
+feature BidPrice1
+    norm_alpha 3e-6
+
+feature BidVolume0
+    norm_alpha 3e-6
+feature AskVolume0
+    norm_alpha 3e-6
+feature BidVolume1
+    norm_alpha 3e-6
+feature AskVolume1
+    norm_alpha 3e-6
+
+feature AskPrice0
+    norm_alpha 3e-6
+feature AskPrice1
+    norm_alpha 3e-6
+
+feature Convert0
+    norm_alpha 3e-6
+feature Convert1
+    norm_alpha 3e-6
+
+feature MeanBidVolume0
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanAskVolume0
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanBidVolume1
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanAskVolume1
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+
+feature MeanBidPrice0
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanAskPrice0
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanBidPrice1
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanAskPrice1
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+
+feature MeanConvert0
+    norm_alpha 3e-6
+    mean_alpha 3e-6
+feature MeanConvert1
+    norm_alpha 3e-6
+    mean_alpha 3e-6

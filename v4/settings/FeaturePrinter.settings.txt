@@ -1,0 +1,5 @@
+feature_settings_path   settings/feature.settings.txt
+target_settings_path    settings/target.settings.txt
+output_path             feature_log.csv
+separator               ,
+history_step_count      0

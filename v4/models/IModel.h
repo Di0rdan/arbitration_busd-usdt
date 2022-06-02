@@ -1,5 +1,6 @@
 #pragma once
 #include "../exchange.h"
+#include <exception>
 
 class IModel {
 public:
@@ -9,4 +10,6 @@ public:
     void SetExchange(Exchange* exchange_ptr) {
         exchange = exchange_ptr;
     }
+
+    void Update(const DataRow&);
 };
